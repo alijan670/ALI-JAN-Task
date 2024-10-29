@@ -1,0 +1,71 @@
+### Documentation for Laravel and WooCommerce Integration
+
+This document provides an overview of the integration features developed to sync product data and stock levels between WooCommerce (WordPress) and Laravel.
+
+---
+
+## 1. **WordPress Plugin: WooCommerce to Laravel Integration**
+
+**Objective**: A custom WordPress plugin was developed to send product details (name, price, quantity) from WooCommerce to a Laravel API whenever a product is created or updated.
+
+**Setup**:
+- The plugin was created in WordPress under `wp-content/plugins`.
+- Once activated, it listens for product updates and sends the product data to Laravel’s API endpoint (`/api/products`).
+
+**Usage**:
+- The plugin automatically triggers when a WooCommerce product is created or updated.
+- Any errors or confirmations are logged, ensuring visibility into successful transmissions or potential issues.
+
+---
+
+## 2. **Laravel API Endpoint to Receive Product Data**
+
+**Objective**: Laravel’s API is configured to accept incoming product data from WooCommerce and save it to the local `products` table.
+
+**Setup**:
+- An API endpoint (`/api/products`) is defined in Laravel to receive `POST` requests containing product information.
+- Laravel validates the incoming data and stores it in the database for consistent synchronization.
+
+**Usage**:
+- The API endpoint can be accessed by WordPress via the custom plugin, receiving and storing product details in real-time.
+- The endpoint ensures data consistency by validating required fields before saving.
+
+---
+
+## 3. **Laravel Job to Update Stock Levels from WooCommerce**
+
+**Objective**: To ensure that stock levels remain consistent across both platforms, a Laravel job was created to periodically fetch stock levels from WooCommerce.
+
+**Setup**:
+- The job queries WooCommerce’s REST API, retrieves stock quantities, and updates corresponding records in the Laravel database.
+- WooCommerce API credentials are securely stored in Laravel’s environment file for API authentication.
+
+**Usage**:
+- The job can be triggered manually or scheduled to run periodically, allowing for automated synchronization of stock levels from WooCommerce to Laravel.
+
+---
+
+## 4. **Manual Sync from WordPress to Fetch Stock Levels from Laravel**
+
+**Objective**: A manual sync feature was added in WordPress to allow the user to fetch the latest stock data from Laravel and update WooCommerce product stock levels accordingly.
+
+**Setup**:
+- A button was added to the WordPress admin area to trigger the synchronization.
+- JavaScript handles the fetch request to Laravel’s stock API and updates WooCommerce products with the latest stock levels from Laravel.
+
+**Usage**:
+- Users can manually sync stock levels by clicking the “Sync Stock from Laravel” button in the WordPress dashboard.
+- The process is logged in the console for easy monitoring and troubleshooting.
+
+---
+
+## 5. **Laravel Product List Page**
+
+**Objective**: A Laravel frontend page was created to display a table of products, showing stock levels, prices, and creation dates, for easy viewing and verification.
+
+**Setup**:
+- A dedicated route and controller in Laravel fetch and display all products in the `products` table.
+- The page uses Bootstrap for clean, responsive design, making it user-friendly and visually organized.
+
+**Usage**:
+- Accessed via a route (`/products`), this page provides a read-only view of all products stored in Laravel, allowing users to review and verify synced data easily.
